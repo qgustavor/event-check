@@ -60,11 +60,18 @@
         X('Content-type','application/x-www-form-urlencoded');
         x.onloadend = function () {
           var result = {};
-          container.className = container.className.replace('semana-card-wide_hidden', 'semana-card-wide');
           try {
             result = JSON.parse(x.responseText);
-          } catch(e){};
-          
+          } catch(e){
+            return showResult({titulo: 'Erro', mensagem: 'Erro nos dados'});
+          };
+          showResult(result)
+        };
+        x.onerror = function () {
+          showResult({titulo: 'Erro', mensagem: 'Erro na conexão'});
+        };
+        function showResult (data) {
+          container.className = container.className.replace('semana-card-wide_hidden', 'semana-card-wide');
           document.getElementById('semanaTitle').textContent = result.titulo;
           document.getElementById('semanaMessage').textContent = result.mensagem;
           
