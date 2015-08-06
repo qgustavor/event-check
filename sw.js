@@ -1,0 +1,2 @@
+oninstall=(e,r)=>e.waitUntil(fetch(r=new Request("offline.html")).then(p=>caches.open("c").then(cache=>cache.put(r,p)))));));
+onfetch=>e=>e.respondWith(fetch(event.request).catch(()=>caches.open("c").then(c=>c.match("offline.html"))));

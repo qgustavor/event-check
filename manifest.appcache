@@ -1,0 +1,14 @@
+CACHE MANIFEST
+# 2015-07-10T16:40-03:00
+
+# External resources:
+https://storage.googleapis.com/code.getmdl.io/1.0.2/material.indigo-pink.min.css
+https://fonts.googleapis.com/icon?family=Material+Icons
+https://i.imgur.com/vBVYrzo.png
+
+FALLBACK:
+/ offline.html
+
+# All other resources (e.g. sites) require the user to be online. 
+NETWORK:
+*
