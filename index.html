@@ -37,6 +37,7 @@
       <div id="semanaMessage" class="mdl-card__supporting-text"></div>
     </div>
     <script>
+      var container = document.getElementsByClassName('semana-card-wide')[0];
       if(navigator.serviceWorker) {
         navigator.serviceWorker.register('./sw.js', {scope:'.'});
       }
@@ -53,10 +54,13 @@
         var x = new XMLHttpRequest(),
             X = x.setRequestHeader.bind(x);
             
+        container.className += ' semana-card-wide_hidden ';
+            
         x.open('POST', 'https://script.google.com/macros/s/AKfycbw-kz-BrkJN91Iw01TBh0FEppQlHAk4amAQzz3bwGkuIE6UlM8/exec', !0);
         X('Content-type','application/x-www-form-urlencoded');
         x.onloadend = function () {
           var result = {};
+          container.className = container.className.replace('semana-card-wide_hidden', 'semana-card-wide');
           try {
             result = JSON.parse(x.responseText);
           } catch(e){};
@@ -65,9 +69,10 @@
           document.getElementById('semanaMessage').textContent = result.mensagem;
           
           if (data.length) {
-            setTimeout(loop, 1000);
+            setTimeout(loop, 3000);
           }
         };
+        
         x.send('json=1&aluno=' + el);
       }());
     </script>
