@@ -51,13 +51,13 @@
       
       (function loop() {
         var el = data.pop();
-        var x = new XMLHttpRequest(),
-            X = x.setRequestHeader.bind(x);
+        var x = new XMLHttpRequest();;
             
         container.className += ' semana-card-wide_hidden ';
             
         x.open('POST', 'https://script.google.com/macros/s/AKfycbw-kz-BrkJN91Iw01TBh0FEppQlHAk4amAQzz3bwGkuIE6UlM8/exec', !0);
-        X('Content-type','application/x-www-form-urlencoded');
+        x.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+        x.withCredentials = true;
         x.onload = function () {
           var result = {titulo: 'Erro', mensagem: 'Erro na servidor'};
           if (request.status >= 200 && request.status < 400) {
