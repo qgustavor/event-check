@@ -58,19 +58,21 @@
             
         x.open('POST', 'https://script.google.com/macros/s/AKfycbw-kz-BrkJN91Iw01TBh0FEppQlHAk4amAQzz3bwGkuIE6UlM8/exec', !0);
         X('Content-type','application/x-www-form-urlencoded');
-        x.onloadend = function () {
-          var result = {};
-          try {
-            result = JSON.parse(x.responseText);
-          } catch(e){
-            return showResult({titulo: 'Erro', mensagem: 'Erro nos dados'});
-          };
+        x.onload = function () {
+          var result = {titulo: 'Erro', mensagem: 'Erro na servidor'};
+          if (request.status >= 200 && request.status < 400) {
+            result = {titulo: 'Erro', mensagem: 'Erro nos dados'};
+            try {
+              result = JSON.parse(x.responseText);
+            } catch(e){}
+          }
           showResult(result)
         };
         x.onerror = function () {
           showResult({titulo: 'Erro', mensagem: 'Erro na conexão'});
         };
-        function showResult (data) {
+        
+        function showResult (result) {
           container.className = container.className.replace('semana-card-wide_hidden', 'semana-card-wide');
           document.getElementById('semanaTitle').textContent = result.titulo;
           document.getElementById('semanaMessage').textContent = result.mensagem;
