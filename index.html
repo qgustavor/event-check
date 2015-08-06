@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang=en>
+<html lang=pt manifest="manifest.appcache">
   <meta charset=utf-8>
   <meta name=viewport content="initial-scale=1, minimum-scale=1, width=device-width">
   <title>Segunda Semana de Engenharia Civil</title>
@@ -28,7 +28,6 @@
   }
 </style>
 
-<html manifest="manifest.appcache">
   <body>
     <div class="mdl-card mdl-shadow--2dp semana-card-wide semana-card-wide_hidden">
       <div class="mdl-card__title">
@@ -73,7 +72,7 @@
         };
         
         function showResult (result) {
-          container.className = container.className.replace('semana-card-wide_hidden', 'semana-card-wide');
+          container.className = container.className.replace(/semana-card-wide_hidden/g, 'semana-card-wide');
           document.getElementById('semanaTitle').textContent = result.titulo;
           document.getElementById('semanaMessage').textContent = result.mensagem;
           
