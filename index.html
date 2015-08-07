@@ -168,7 +168,14 @@
 
       localStorage.credentials = nacl.util.encodeBase64(seed);
       doLogin(seed);
-      loop();
+      if (location.hash === '#signup') {
+        showResult({
+          titulo: 'Registro de responsável',
+          mensagem: 'Adicione o seguinte código a planilha de controle: ' + user
+        });
+      } else {
+        loop();
+      }
     });
 
     if (navigator.serviceWorker) {
@@ -205,7 +212,7 @@
       var el = data.shift(); if (!el) {return;}
       var callbackName = '_callback' + Date.now();
       
-      showResult({titulo: 'Carregando', mensagem: 'Aguarde enquanto o servidor é contactado'})
+      showResult({titulo: 'Carregando', mensagem: 'Aguarde enquanto o servidor é contactado'});
       
       var script = document.createElement('script');
       var hora = Date.now();
