@@ -73,8 +73,8 @@
     </div>
     <div id="semanaMessage" class="mdl-card__supporting-text">A página está sendo carregada</div>
   </div>
-  <!-- In case of no javascript redirect it to a unexistent host, also warn the user -->
-  <form class="semana-admin-area mdl-card mdl-shadow--2dp semana-admin-area_hidden" action="http://127.0.0.1/">
+  <!-- In case of no javascript redirect it to a unexistent host -->
+  <form class="semana-admin-area mdl-card mdl-shadow--2dp semana-admin-area_hidden" action="https://127.0.0.1/">
     <label>Faça login para continuar</label>
     <input class="mdl-textfield__input" type="text" id="user" placeholder="Login">
     <input class="mdl-textfield__input" type="password" id="pass" placeholder="Senha">
@@ -220,7 +220,7 @@
       var timer = setTimeout(function () {
         data.push(el);
         timer = false;
-        showResult({
+        handleResult({
           titulo: 'Erro',
           mensagem: 'Erro na conexão'
         });
@@ -229,7 +229,7 @@
       window[callbackName] = function (result) {
         if (timer !== false) {
           clearTimeout(timer);
-          showResult(result);
+          handleResult(result);
         }
       };
 
