@@ -73,12 +73,13 @@
     </div>
     <div id="semanaMessage" class="mdl-card__supporting-text">A página está sendo carregada</div>
   </div>
-  <div class="semana-admin-area mdl-card mdl-shadow--2dp semana-admin-area_hidden">
+  <!-- In case of no javascript redirect it to a unexistent host, also warn the user -->
+  <form class="semana-admin-area mdl-card mdl-shadow--2dp semana-admin-area_hidden" action="http://127.0.0.1/">
     <label>Faça login para continuar</label>
     <input class="mdl-textfield__input" type="text" id="user" placeholder="Login">
     <input class="mdl-textfield__input" type="password" id="pass" placeholder="Senha">
-    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="doLogin">Fazer login</button>
-  </div>
+    <input class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="doLogin" type="submit" value="Fazer login">
+  </form>
   <button class="mdl-button mdl-js-button semana-admin-link">Alterar credenciais</button>
   
   <!-- Typed Array fallback, based on the famous H5BP jQuery fallback -->
@@ -87,6 +88,7 @@
   <script>
     var container = document.getElementsByClassName('semana-card-wide')[0];
     var adminLink = document.getElementsByClassName('semana-admin-link')[0];
+    var doLoginForm = document.getElementsByClassName('semana-admin-area')[0];
     var doLoginBtn = document.getElementById('doLogin');
 
     var websiteSalt = nacl.util.decodeUTF8('segunda-semana');
@@ -156,7 +158,8 @@
       user = nacl.util.encodeBase64(credentials.publicKey);
     }
 
-    doLoginBtn.addEventListener('click', function () {
+    doLoginForm.addEventListener('submit', function (evt) {
+      evt.preventDefault();
       accessAdminArea();
       var seed = generateKeyPair(
         document.getElementById('user'),
@@ -231,9 +234,9 @@
       };
 
       document.head.appendChild(script);
-      script.onload = function () {
+      script.addEventListener('load', function () {
         document.head.removeChild(script);
-      };
+      });
       
       function handleResult (result) {
         container.classList.remove('semana-card-wide_hidden');
