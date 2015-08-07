@@ -128,7 +128,7 @@
     adminLink.addEventListener('click', accessAdminArea);
 
     function accessAdminArea(evt) {
-      if (evt.preventDefault) {evt.preventDefault();}
+      if (evt && evt.preventDefault) {evt.preventDefault();}
       document.getElementsByClassName('semana-admin-area')[0].classList
         .toggle('semana-admin-area_hidden');
       container.classList.toggle('semana-card-wide_hidden');
