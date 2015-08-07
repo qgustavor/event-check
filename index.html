@@ -39,10 +39,9 @@
   .semana-card-wide > .mdl-card__title {
     color: #fff;
     height: 176px;
-    background: url('https://i.imgur.com/vBVYrzo.png') center;
-    background: url('https://i.imgur.com/vBVYrzo.png') center / cover;
     background: -webkit-linear-gradient(90deg, rgba(0, 0, 0, .5), transparent 50%), url('https://i.imgur.com/vBVYrzo.png') center / cover;
     background: linear-gradient(0deg, rgba(0, 0, 0, .5), transparent 50%), url('https://i.imgur.com/vBVYrzo.png') center / cover;
+    background-color: #536DFE;
   }
   
   .semana-card-wide > .mdl-card__menu {
@@ -50,9 +49,12 @@
   }
   
   .semana-admin-link {
-    text-align: center;
     opacity: 0.2;
     transition: opacity 0.3s;
+    position: absolute;
+    bottom: 7%;
+    left: 50%;
+    transform: translateX(-50%);
   }
   
   .semana-admin-link:hover, .semana-admin-link:focus { opacity: 1; }
@@ -73,7 +75,10 @@
   </div>
   <div class="semana-admin-area mdl-card mdl-shadow--2dp"><label>Faça login para continuar</label><input class="mdl-textfield__input" type="text" id="user" placeholder="Login"><input class="mdl-textfield__input" type="password" id="pass" placeholder="Senha"><button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="doLogin">Atualizar credenciais</button>
   </div>
-  <a class="semana-admin-link" href="#">Alterar credenciais</a>
+  <button class="mdl-button mdl-js-button semana-admin-link">Alterar credenciais</button>
+  
+  <!-- Typed Array fallback, based on the famous H5BP jQuery fallback -->
+  <script>window.Uint8Array || document.write('<script src="https://cdn.rawgit.com/inexorabletash/polyfill/1787e143a8ee7b0747ac8c974d98dcec5669b89e/typedarray.js"><\/script>');</script>
   <script src="https://cdn.rawgit.com/dchest/tweetnacl-js/9e1ef31362dfe88aa9ca96468cdc3f28d72ba2da/nacl-fast.min.js"></script>
   <script>
     var container = document.getElementsByClassName('semana-card-wide')[0];
@@ -105,7 +110,7 @@
 
     function generateKeyPair(userEl, passEl) {
       var hash = new Uint8Array([]);
-      var user = nacl.util.decodeUTF8(userEl.value);
+      var user = nacl.util.decodeUTF8(userEl.value.trim().toLowerCase());
       var pass = nacl.util.decodeUTF8(passEl.value);
 
       var userData = typedConcat(
