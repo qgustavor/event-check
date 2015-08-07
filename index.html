@@ -221,12 +221,12 @@
           titulo: 'Erro',
           mensagem: 'Erro na conexão'
         });
-      }, 10e3);
+      }, 30e3);
 
       window[callbackName] = function (result) {
         if (timer !== false) {
-          showResult(result);
           clearTimeout(timer);
+          showResult(result);
         }
       };
 
