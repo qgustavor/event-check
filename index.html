@@ -168,14 +168,7 @@
 
       localStorage.credentials = nacl.util.encodeBase64(seed);
       doLogin(seed);
-      if (location.hash === '#signup') {
-        showResult({
-          titulo: 'Registro de responsável',
-          mensagem: 'Adicione o seguinte código a planilha de controle: ' + user
-        });
-      } else {
-        loop();
-      }
+      afterLogged();
     });
 
     if (navigator.serviceWorker) {
@@ -203,9 +196,20 @@
     data = data.filter(function(e){return e;});
 
     if (user) {
-      loop();
+      afterLogged();
     } else {
       accessAdminArea();
+    }
+    
+    function afterLogged() {
+      if (location.hash === '#signup') {
+        showResult({
+          titulo: 'Registro de responsável',
+          mensagem: 'Adicione o seguinte código a planilha de controle: ' + user
+        });
+      } else {
+        loop();
+      }
     }
 
     function loop() {
