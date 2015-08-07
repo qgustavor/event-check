@@ -60,10 +60,10 @@
         container.className += ' semana-card-wide_hidden ';
         
         var timer = setTimeout(function () {
-          showResult({titulo: 'Erro', mensagem: 'Erro na conexão'});
           data.push(el);
+          showResult({titulo: 'Erro', mensagem: 'Erro na conexão'});
           timer = false;
-        }, 3000);
+        }, 5000);
         
         window[callbackName] = function (result) {
           if (timer !== false) {
