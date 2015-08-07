@@ -27,9 +27,13 @@
   
   .semana-admin-area_hidden + .semana-admin-link { display: block; }
   
-  .semana-card-wide.mdl-card {
+  .semana-admin-area, .semana-card-wide {
+    position: absolute;
+    top: 7%;
     max-width: 254px;
     margin: 7% auto 1%;
+    left: 0;
+    right: 0;
   }
   
   .semana-card-wide > .mdl-card__title {
@@ -54,24 +58,22 @@
   .semana-admin-link:hover, .semana-admin-link:focus { opacity: 1; }
   
   .semana-admin-area {
-    max-width: 254px; margin: 0 auto; text-align: center;
+    text-align: center;
+    padding: 2em;
   }
   .semana-admin-area > * { margin: 0.5em auto; }
 </style>
 
 <body>
-  <div class="mdl-card mdl-shadow--2dp semana-card-wide">
+  <div class="mdl-card mdl-shadow--2dp semana-card-wide semana-card-wide_hidden">
     <div class="mdl-card__title">
       <h2 id="semanaTitle" class="mdl-card__title-text">Carregando</h2>
     </div>
     <div id="semanaMessage" class="mdl-card__supporting-text">Aguarde enquanto o servidor é contactado</div>
   </div>
-  <div class="semana-admin-area semana-admin-area_hidden">
-    <input class="mdl-textfield__input" type="text" id="user" placeholder="Login" />
-    <input class="mdl-textfield__input" type="password" id="pass" placeholder="Senha" />
-    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="doLogin">Fazer login</button>
+  <div class="semana-admin-area mdl-card mdl-shadow--2dp"><label>Faça login para continuar</label><input class="mdl-textfield__input" type="text" id="user" placeholder="Login"><input class="mdl-textfield__input" type="password" id="pass" placeholder="Senha"><button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="doLogin">Atualizar credenciais</button>
   </div>
-  <a class="semana-admin-link" href="">Acessar administração</a>
+  <a class="semana-admin-link" href="#">Alterar credenciais</a>
   <script src="https://cdn.rawgit.com/dchest/tweetnacl-js/9e1ef31362dfe88aa9ca96468cdc3f28d72ba2da/nacl-fast.min.js"></script>
   <script>
     var container = document.getElementsByClassName('semana-card-wide')[0];
@@ -230,7 +232,7 @@
         document.getElementById('semanaMessage').textContent = result.mensagem;
 
         if (data.length) {
-          setTimeout(loop, 3000);
+          setTimeout(loop, 2500);
         } else {
           timer = null;
         }
