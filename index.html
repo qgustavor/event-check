@@ -49,30 +49,26 @@
       }
       
       (function loop() {
-        var el = data.pop();
-        var x = new XMLHttpRequest();;
+        var el = data.shift();
+        var callbackName = '_callback' + Date.now();
+        var script = document.createElement('script');
+        script.src = 'https://script.google.com/macros/s/AKfycbw-kz-BrkJN91Iw01TBh0FEppQlHAk4amAQzz3bwGkuIE6UlM8/exec' +
+         '?callback=' + encodeURIComponent(callbackName) + '&aluno=' + el;
             
         container.className += ' semana-card-wide_hidden ';
-            
-        x.open('POST', 'https://script.google.com/macros/s/AKfycbw-kz-BrkJN91Iw01TBh0FEppQlHAk4amAQzz3bwGkuIE6UlM8/exec', !0);
-        x.setRequestHeader('Content-type','application/x-www-form-urlencoded');
-        x.withCredentials = true;
-        x.onload = function () {
-          var result = {titulo: 'Erro', mensagem: 'Erro na servidor'};
-          if (request.status >= 200 && request.status < 400) {
-            result = {titulo: 'Erro', mensagem: 'Erro nos dados'};
-            try {
-              result = JSON.parse(x.responseText);
-            } catch(e){}
-          }
+        
+        window[callbackName] = function (result) {
           showResult(result)
         };
-        x.onerror = function () {
+        script.onerror = function () {
           showResult({titulo: 'Erro', mensagem: 'Erro na conexão'});
+          data.push(el);
         };
+        document.head.appendChild(script);
         
         function showResult (result) {
-          container.className = container.className.replace(/semana-card-wide_hidden/g, 'semana-card-wide');
+          document.head.removeChild(script);
+          container.className = 'mdl-card mdl-shadow--2dp semana-card-wide';
           document.getElementById('semanaTitle').textContent = result.titulo;
           document.getElementById('semanaMessage').textContent = result.mensagem;
           
@@ -80,8 +76,6 @@
             setTimeout(loop, 3000);
           }
         };
-        
-        x.send('json=1&aluno=' + el);
       }());
     </script>
   </body>
