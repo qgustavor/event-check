@@ -49,6 +49,10 @@
     color: #fff;
   }
   
+  .semana-card-wide_signup > .mdl-card__supporting-text {
+    word-break: break-all;
+  }
+  
   .semana-admin-link {
     opacity: 0.2;
     transition: opacity 0.3s;
@@ -207,6 +211,7 @@
           titulo: 'Registro de responsável',
           mensagem: 'Adicione o seguinte código a planilha de controle: ' + user
         });
+        container.classList.add('semana-card-wide_signup');
       } else {
         loop();
       }
