@@ -9,15 +9,17 @@
 
 <style>
   body {background-color: #FAFAFA; }
-  .semana-card-wide{transition: opacity 0.6s;}
-  .semana-card-wide_hidden {opacity:0.1;}
+  .semana-card-wide{transition: opacity 1.2s ease-out;}
+  .semana-card-wide_hidden {opacity: 0.2;}
   .semana-card-wide.mdl-card {
-    max-width: 512px;
+    max-width: 254px;
     margin: 7% auto;
   }
   .semana-card-wide > .mdl-card__title {
     color: #fff;
     height: 176px;
+    background: url('https://i.imgur.com/vBVYrzo.png') center;
+    background: url('https://i.imgur.com/vBVYrzo.png') center / cover;
     background: -webkit-linear-gradient(90deg, rgba(0, 0, 0, .5), transparent 50%),
       url('https://i.imgur.com/vBVYrzo.png') center / cover;
     background: linear-gradient(0deg, rgba(0, 0, 0, .5), transparent 50%),
@@ -48,7 +50,7 @@
         localStorage.offlineData = '';
       }
       
-      setTimeout(function loop() {
+      (function loop() {
         var el = data.shift();
         var callbackName = '_callback' + Date.now();
         var script = document.createElement('script');
@@ -80,9 +82,11 @@
           
           if (data.length) {
             setTimeout(loop, 3000);
+          } else {
+            timer = null;
           }
         };
-      }, 1000);
+      }());
     </script>
   </body>
 </html>
