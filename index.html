@@ -20,9 +20,12 @@
     opacity: 0.2;
   }
   
-  .semana-admin-area_hidden {
+  .semana-admin-area_hidden,
+  .semana-admin-link {
     display: none;
   }
+  
+  .semana-admin-area_hidden + .semana-admin-link { display: block; }
   
   .semana-card-wide.mdl-card {
     max-width: 254px;
@@ -44,13 +47,12 @@
   
   .semana-admin-link {
     text-align: center;
-    /* display: block; */
-    display: none;
   }
   
   .semana-admin-area {
-    max-width: 254px;
+    max-width: 254px; margin: 0 auto; text-align: center;
   }
+  .semana-admin-area > * { margin: 0.5em auto; }
 </style>
 
 <body>
@@ -62,7 +64,7 @@
   </div>
   <div class="semana-admin-area semana-admin-area_hidden">
     <input class="mdl-textfield__input" type="text" id="user" placeholder="Login" />
-    <input class="mdl-textfield__input" type="text" id="pass" placeholder="Senha" />
+    <input class="mdl-textfield__input" type="password" id="pass" placeholder="Senha" />
     <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="doLogin">Fazer login</button>
   </div>
   <a class="semana-admin-link" href="">Acessar administração</a>
@@ -108,7 +110,7 @@
 
       // Target devices are mobile ones
       // By the way, no one will try to break this.
-      for (var i = 0; i < 100; i++) {
+      for (var i = 0; i < 500; i++) {
         hash = nacl.hash(typedConcat(
           userData,
           hash,
@@ -121,9 +123,11 @@
 
     adminLink.addEventListener('click', accessAdminArea);
 
-    function accessAdminArea() {
+    function accessAdminArea(evt) {
+      if (evt.preventDefault) {evt.preventDefault();}
       document.getElementsByClassName('semana-admin-area')[0].classList
         .toggle('semana-admin-area_hidden');
+      container.classList.toggle('semana-card-wide_hidden');
     }
 
     var credentials;
@@ -139,6 +143,7 @@
     }
 
     doLoginBtn.addEventListener('click', function () {
+      accessAdminArea();
       var seed = generateKeyPair(
         document.getElementById('user'),
         document.getElementById('pass'));
@@ -161,6 +166,8 @@
       } catch (e) {}
       localStorage.offlineData = '';
     }
+    
+    data = data.filter(function(e){return e;});
 
     if (user) {
       loop();
@@ -169,7 +176,7 @@
     }
 
     function loop() {
-      var el = data.shift();
+      var el = data.shift(); if (!el) {return;}
       var callbackName = '_callback' + Date.now();
       var script = document.createElement('script');
       var hora = Date.now();
@@ -178,7 +185,8 @@
           aluno: el,
           palestra: palestra,
           hora: hora
-        })), credentials.privateKey
+        })),
+        credentials.secretKey
       ));
 
       script.src = 'https://script.google.com/macros/s/AKfycbw-kz-BrkJN91Iw01TBh0FEppQlHAk4amAQzz3bwGkuIE6UlM8/exec' +
