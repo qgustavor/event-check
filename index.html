@@ -71,7 +71,7 @@
     <div class="mdl-card__title">
       <h2 id="semanaTitle" class="mdl-card__title-text">Carregando</h2>
     </div>
-    <div id="semanaMessage" class="mdl-card__supporting-text">Aguarde enquanto o servidor é contactado</div>
+    <div id="semanaMessage" class="mdl-card__supporting-text">A página está sendo carregada</div>
   </div>
   <div class="semana-admin-area mdl-card mdl-shadow--2dp semana-admin-area_hidden">
     <label>Faça login para continuar</label>
@@ -88,7 +88,6 @@
     var container = document.getElementsByClassName('semana-card-wide')[0];
     var adminLink = document.getElementsByClassName('semana-admin-link')[0];
     var doLoginBtn = document.getElementById('doLogin');
-    var palestra = '';
 
     var websiteSalt = nacl.util.decodeUTF8('segunda-semana');
 
@@ -193,13 +192,16 @@
     function loop() {
       var el = data.shift(); if (!el) {return;}
       var callbackName = '_callback' + Date.now();
+      
+      showResult({titulo: 'Carregando', mensagem: 'Aguarde enquanto o servidor é contactado'})
+      
       var script = document.createElement('script');
       var hora = Date.now();
       var sign = nacl.util.encodeBase64(nacl.sign.detached(
         nacl.util.decodeUTF8(JSON.stringify({
           aluno: el,
           palestra: palestra,
-          hora: hora
+          hora: hora // Let's avoid replay attacks
         })),
         credentials.secretKey
       ));
@@ -207,7 +209,6 @@
       script.src = 'https://script.google.com/macros/s/AKfycbw-kz-BrkJN91Iw01TBh0FEppQlHAk4amAQzz3bwGkuIE6UlM8/exec' +
         '?callback=' + encodeURIComponent(callbackName) +
         '&aluno=' + el +
-        '&palestra=' + palestra +
         '&user=' + user +
         '&pass=' + sign +
         '&hora=' + hora;
@@ -231,14 +232,13 @@
       };
 
       document.head.appendChild(script);
-      setTimeout(function () {
+      script.onload = function () {
         document.head.removeChild(script);
-      }, 100);
-
-      function showResult(result) {
+      };
+      
+      function handleResult (result) {
         container.classList.remove('semana-card-wide_hidden');
-        document.getElementById('semanaTitle').textContent = result.titulo;
-        document.getElementById('semanaMessage').textContent = result.mensagem;
+        showResult(result);
 
         if (data.length) {
           setTimeout(loop, 2500);
@@ -246,6 +246,11 @@
           timer = null;
         }
       }
+    }
+      
+    function showResult(result) {
+      document.getElementById('semanaTitle').textContent = result.titulo;
+      document.getElementById('semanaMessage').textContent = result.mensagem;
     }
   </script>
 </body>
