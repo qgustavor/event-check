@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang=pt manifest="manifest.appcache">
+<html lang=pt>
 <meta charset=utf-8>
 <meta name=viewport content="initial-scale=1, minimum-scale=1, width=device-width">
 <title>Segunda Semana de Engenharia Civil</title>
@@ -175,6 +175,14 @@
       navigator.serviceWorker.register('sw.js', {
         scope: '.'
       });
+    } else {
+      var iframe = document.createElement('iframe');
+      iframe.style.opacity = 0;
+      iframe.src = 'offline.html';
+      iframe.addEventListener('load', function () {
+        document.body.removeChild(iframe);  
+      });
+      document.body.appendChild(iframe);
     }
 
     var data = [(location.href.match(/aluno=(\d+)/) || [])[1]];

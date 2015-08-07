@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang=en>
+<html lang=pt manifest="manifest.appcache">
   <meta charset=utf-8>
   <meta name=viewport content="initial-scale=1, minimum-scale=1, width=device-width">
   <title>Segunda Semana de Engenharia Civil</title>
@@ -9,8 +9,12 @@
     body{margin:7% auto 0;max-width:390px;min-height:180px;padding:30px 0 15px}
     p{margin:11px 0 22px;overflow:hidden}
   </style>
-  <script>localStorage.offlineData=JSON.stringify(
-    JSON.parse(localStorage.offlineData || '[]').concat(location.href.match(/aluno=(\d+)/)[1])
-  );</script>
+  <script>
+    if (top === parent) {
+      localStorage.offlineData=JSON.stringify(
+        JSON.parse(localStorage.offlineData || '[]').concat(location.href.match(/aluno=(\d+)/)[1])
+      );
+    }
+  </script>
   <p><b>Você está offline.</b>
   <p>A confirmação foi registrada nesse dispositivo e será efetivada quando a conexão for reestabelecida e essa página for aberta novamente.

@@ -8,7 +8,7 @@ oninstall = function (e, r) {
   }));
 };
 onfetch = function (e) {
-  return e.respondWith(fetch(event.request)["catch"](function () {
+  return e.respondWith(fetch(e.request)["catch"](function () {
     return caches.open("c").then(function (c) {
       return c.match("offline.html");
     });
