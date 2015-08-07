@@ -67,13 +67,17 @@
 </style>
 
 <body>
-  <div class="mdl-card mdl-shadow--2dp semana-card-wide semana-card-wide_hidden">
+  <div class="mdl-card mdl-shadow--2dp semana-card-wide">
     <div class="mdl-card__title">
       <h2 id="semanaTitle" class="mdl-card__title-text">Carregando</h2>
     </div>
     <div id="semanaMessage" class="mdl-card__supporting-text">Aguarde enquanto o servidor é contactado</div>
   </div>
-  <div class="semana-admin-area mdl-card mdl-shadow--2dp"><label>Faça login para continuar</label><input class="mdl-textfield__input" type="text" id="user" placeholder="Login"><input class="mdl-textfield__input" type="password" id="pass" placeholder="Senha"><button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="doLogin">Atualizar credenciais</button>
+  <div class="semana-admin-area mdl-card mdl-shadow--2dp semana-admin-area_hidden">
+    <label>Faça login para continuar</label>
+    <input class="mdl-textfield__input" type="text" id="user" placeholder="Login">
+    <input class="mdl-textfield__input" type="password" id="pass" placeholder="Senha">
+    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="doLogin">Fazer login</button>
   </div>
   <button class="mdl-button mdl-js-button semana-admin-link">Alterar credenciais</button>
   
