@@ -128,7 +128,6 @@
 
     var credentials;
     var user = '';
-    var pass = '';
     if (localStorage.credentials) {
       doLoginBtn.textContent = 'Atualizar credenciais';
       doLogin(nacl.util.decodeBase64(localStorage.credentials));
@@ -179,7 +178,7 @@
           aluno: el,
           palestra: palestra,
           hora: hora
-        })) credentials.privateKey
+        })), credentials.privateKey
       ));
 
       script.src = 'https://script.google.com/macros/s/AKfycbw-kz-BrkJN91Iw01TBh0FEppQlHAk4amAQzz3bwGkuIE6UlM8/exec' +
@@ -221,7 +220,7 @@
         } else {
           timer = null;
         }
-      };
+      }
     }
   </script>
 </body>
