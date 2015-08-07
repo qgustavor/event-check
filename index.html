@@ -200,7 +200,6 @@
       var sign = nacl.util.encodeBase64(nacl.sign.detached(
         nacl.util.decodeUTF8(JSON.stringify({
           aluno: el,
-          palestra: palestra,
           hora: hora // Let's avoid replay attacks
         })),
         credentials.secretKey
