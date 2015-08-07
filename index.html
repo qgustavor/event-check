@@ -42,7 +42,7 @@
       if(navigator.serviceWorker) {
         navigator.serviceWorker.register('./sw.js', {scope:'.'});
       }
-      var data = [(location.search.match(/aluno=(\d+)/)||[])[1]];
+      var data = [(location.href.match(/aluno=(\d+)/)||[])[1]];
       if(localStorage.offlineData){
         try {
           data = data.concat(JSON.parse(localStorage.offlineData));

@@ -10,7 +10,7 @@
     p{margin:11px 0 22px;overflow:hidden}
   </style>
   <script>localStorage.offlineData=JSON.stringify(
-    JSON.parse(localStorage.offlineData || '[]').concat(location.search.match(/aluno=(\d+)/)[1])
+    JSON.parse(localStorage.offlineData || '[]').concat(location.href.match(/aluno=(\d+)/)[1])
   );</script>
   <p><b>Você está offline.</b>
   <p>A confirmação foi registrada nesse dispositivo e será efetivada quando a conexão for reestabelecida e essa página for aberta novamente.
