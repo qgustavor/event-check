@@ -220,9 +220,11 @@
       };
 
       document.head.appendChild(script);
+      setTimeout(function () {
+        document.head.removeChild(script);
+      }, 100);
 
       function showResult(result) {
-        document.head.removeChild(script);
         container.classList.remove('semana-card-wide_hidden');
         document.getElementById('semanaTitle').textContent = result.titulo;
         document.getElementById('semanaMessage').textContent = result.mensagem;
