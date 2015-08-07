@@ -1,97 +1,229 @@
 <!DOCTYPE html>
 <html lang=pt manifest="manifest.appcache">
-  <meta charset=utf-8>
-  <meta name=viewport content="initial-scale=1, minimum-scale=1, width=device-width">
-  <title>Segunda Semana de Engenharia Civil</title>
-  
+<meta charset=utf-8>
+<meta name=viewport content="initial-scale=1, minimum-scale=1, width=device-width">
+<title>Segunda Semana de Engenharia Civil</title>
+
 <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.2/material.red-indigo.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 <style>
-  body {background-color: #FAFAFA; }
-  .semana-card-wide{transition: opacity 1.2s ease-out;}
-  .semana-card-wide_hidden {opacity: 0.2;}
+  body {
+    background-color: #FAFAFA;
+  }
+  
+  .semana-card-wide {
+    transition: opacity 1.2s ease-out;
+  }
+  
+  .semana-card-wide_hidden {
+    opacity: 0.2;
+  }
+  
+  .semana-admin-area_hidden {
+    display: none;
+  }
+  
   .semana-card-wide.mdl-card {
     max-width: 254px;
     margin: 7% auto 1%;
   }
+  
   .semana-card-wide > .mdl-card__title {
     color: #fff;
     height: 176px;
     background: url('https://i.imgur.com/vBVYrzo.png') center;
     background: url('https://i.imgur.com/vBVYrzo.png') center / cover;
-    background: -webkit-linear-gradient(90deg, rgba(0, 0, 0, .5), transparent 50%),
-      url('https://i.imgur.com/vBVYrzo.png') center / cover;
-    background: linear-gradient(0deg, rgba(0, 0, 0, .5), transparent 50%),
-      url('https://i.imgur.com/vBVYrzo.png') center / cover;
+    background: -webkit-linear-gradient(90deg, rgba(0, 0, 0, .5), transparent 50%), url('https://i.imgur.com/vBVYrzo.png') center / cover;
+    background: linear-gradient(0deg, rgba(0, 0, 0, .5), transparent 50%), url('https://i.imgur.com/vBVYrzo.png') center / cover;
   }
+  
   .semana-card-wide > .mdl-card__menu {
     color: #fff;
   }
+  
   .semana-admin-link {
     text-align: center;
-    /* display: block; */ display: none;
+    /* display: block; */
+    display: none;
+  }
+  
+  .semana-admin-area {
+    max-width: 254px;
   }
 </style>
 
-  <body>
-    <div class="mdl-card mdl-shadow--2dp semana-card-wide">
-      <div class="mdl-card__title">
-        <h2 id="semanaTitle" class="mdl-card__title-text">Carregando</h2>
-      </div>
-      <div id="semanaMessage" class="mdl-card__supporting-text">Aguarde enquanto o servidor é contactado</div>
+<body>
+  <div class="mdl-card mdl-shadow--2dp semana-card-wide">
+    <div class="mdl-card__title">
+      <h2 id="semanaTitle" class="mdl-card__title-text">Carregando</h2>
     </div>
-    <a class="semana-admin-link" href="">Acessar administração</a>
-    <script>
-      var container = document.getElementsByClassName('semana-card-wide')[0];
-      if(navigator.serviceWorker) {
-        navigator.serviceWorker.register('./sw.js', {scope:'.'});
+    <div id="semanaMessage" class="mdl-card__supporting-text">Aguarde enquanto o servidor é contactado</div>
+  </div>
+  <div class="semana-admin-area semana-admin-area_hidden">
+    <input class="mdl-textfield__input" type="text" id="user" placeholder="Login" />
+    <input class="mdl-textfield__input" type="text" id="pass" placeholder="Senha" />
+    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="doLogin">Fazer login</button>
+  </div>
+  <a class="semana-admin-link" href="">Acessar administração</a>
+  <script src="https://cdn.rawgit.com/dchest/tweetnacl-js/9e1ef31362dfe88aa9ca96468cdc3f28d72ba2da/nacl-fast.min.js"></script>
+  <script>
+    var container = document.getElementsByClassName('semana-card-wide')[0];
+    var adminLink = document.getElementsByClassName('semana-admin-link')[0];
+    var doLoginBtn = document.getElementById('doLogin');
+    var palestra = '';
+
+    var websiteSalt = nacl.util.decodeUTF8('segunda-semana');
+
+    function typedConcat() {
+      var i;
+      var result;
+      var totalLength = 0;
+
+      for (i = 0; i < arguments.length; i++) {
+        totalLength += arguments[i].length;
       }
-      var data = [(location.href.match(/aluno=(\d+)/)||[])[1]];
-      if(localStorage.offlineData){
-        try {
-          data = data.concat(JSON.parse(localStorage.offlineData));
-        } catch(e){}
-        localStorage.offlineData = '';
+
+      result = new Uint8Array(totalLength);
+      totalLength = 0; // reuse
+
+      for (i = 0; i < arguments.length; i++) {
+        result.set(arguments[i], totalLength);
+        totalLength += arguments[i].length;
       }
-      
-      (function loop() {
-        var el = data.shift();
-        var callbackName = '_callback' + Date.now();
-        var script = document.createElement('script');
-        script.src = 'https://script.google.com/macros/s/AKfycbw-kz-BrkJN91Iw01TBh0FEppQlHAk4amAQzz3bwGkuIE6UlM8/exec' +
-         '?callback=' + encodeURIComponent(callbackName) + '&aluno=' + el;
-            
-        container.className += ' semana-card-wide_hidden ';
-        
-        var timer = setTimeout(function () {
-          data.push(el);
-          showResult({titulo: 'Erro', mensagem: 'Erro na conexão'});
-          timer = false;
-        }, 9000);
-        
-        window[callbackName] = function (result) {
-          if (timer !== false) {
-            showResult(result);
-            clearTimeout(timer);
-          }
-        };
-        
-        document.head.appendChild(script);
-        
-        function showResult (result) {
-          document.head.removeChild(script);
-          container.className = 'mdl-card mdl-shadow--2dp semana-card-wide';
-          document.getElementById('semanaTitle').textContent = result.titulo;
-          document.getElementById('semanaMessage').textContent = result.mensagem;
-          
-          if (data.length) {
-            setTimeout(loop, 3000);
-          } else {
-            timer = null;
-          }
-        };
-      }());
-    </script>
-  </body>
+
+      return result;
+    }
+
+    function generateKeyPair(userEl, passEl) {
+      var hash = new Uint8Array([]);
+      var user = nacl.util.decodeUTF8(userEl.value);
+      var pass = nacl.util.decodeUTF8(passEl.value);
+
+      var userData = typedConcat(
+        user,
+        websiteSalt,
+        pass
+      );
+
+      // Target devices are mobile ones
+      // By the way, no one will try to break this.
+      for (var i = 0; i < 100; i++) {
+        hash = nacl.hash(typedConcat(
+          userData,
+          hash,
+          userData
+        ));
+      }
+
+      return hash.slice(0, 32);
+    }
+
+    adminLink.addEventListener('click', accessAdminArea);
+
+    function accessAdminArea() {
+      document.getElementsByClassName('semana-admin-area')[0].classList
+        .toggle('semana-admin-area_hidden');
+    }
+
+    var credentials;
+    var user = '';
+    var pass = '';
+    if (localStorage.credentials) {
+      doLoginBtn.textContent = 'Atualizar credenciais';
+      doLogin(nacl.util.decodeBase64(localStorage.credentials));
+    }
+
+    function doLogin(password) {
+      credentials = nacl.sign.keyPair.fromSeed(password);
+      user = nacl.util.encodeBase64(credentials.publicKey);
+    }
+
+    doLoginBtn.addEventListener('click', function () {
+      var seed = generateKeyPair(
+        document.getElementById('user'),
+        document.getElementById('pass'));
+
+      localStorage.credentials = nacl.util.encodeBase64(seed);
+      doLogin(seed);
+      loop();
+    });
+
+    if (navigator.serviceWorker) {
+      navigator.serviceWorker.register('./sw.js', {
+        scope: '.'
+      });
+    }
+
+    var data = [(location.href.match(/aluno=(\d+)/) || [])[1]];
+    if (localStorage.offlineData) {
+      try {
+        data = data.concat(JSON.parse(localStorage.offlineData));
+      } catch (e) {}
+      localStorage.offlineData = '';
+    }
+
+    if (user) {
+      loop();
+    } else {
+      accessAdminArea();
+    }
+
+    function loop() {
+      var el = data.shift();
+      var callbackName = '_callback' + Date.now();
+      var script = document.createElement('script');
+      var hora = Date.now();
+      var sign = nacl.util.encodeBase64(nacl.sign.detached(
+        nacl.util.decodeUTF8(JSON.stringify({
+          aluno: el,
+          palestra: palestra,
+          hora: hora
+        })) credentials.privateKey
+      ));
+
+      script.src = 'https://script.google.com/macros/s/AKfycbw-kz-BrkJN91Iw01TBh0FEppQlHAk4amAQzz3bwGkuIE6UlM8/exec' +
+        '?callback=' + encodeURIComponent(callbackName) +
+        '&aluno=' + el +
+        '&palestra=' + palestra +
+        '&user=' + user +
+        '&pass=' + sign +
+        '&hora=' + hora;
+
+      container.classList.add('semana-card-wide_hidden');
+
+      var timer = setTimeout(function () {
+        data.push(el);
+        timer = false;
+        showResult({
+          titulo: 'Erro',
+          mensagem: 'Erro na conexão'
+        });
+      }, 10e3);
+
+      window[callbackName] = function (result) {
+        if (timer !== false) {
+          showResult(result);
+          clearTimeout(timer);
+        }
+      };
+
+      document.head.appendChild(script);
+
+      function showResult(result) {
+        document.head.removeChild(script);
+        container.classList.remove('');
+        document.getElementById('semanaTitle').textContent = result.titulo;
+        document.getElementById('semanaMessage').textContent = result.mensagem;
+
+        if (data.length) {
+          setTimeout(loop, 3000);
+        } else {
+          timer = null;
+        }
+      };
+    }
+  </script>
+</body>
+
 </html>
