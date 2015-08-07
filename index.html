@@ -47,7 +47,11 @@
   
   .semana-admin-link {
     text-align: center;
+    opacity: 0.2;
+    transition: opacity 0.3s;
   }
+  
+  .semana-admin-link:hover, .semana-admin-link:focus { opacity: 1; }
   
   .semana-admin-area {
     max-width: 254px; margin: 0 auto; text-align: center;
@@ -219,7 +223,7 @@
 
       function showResult(result) {
         document.head.removeChild(script);
-        container.classList.remove('');
+        container.classList.remove('semana-card-wide_hidden');
         document.getElementById('semanaTitle').textContent = result.titulo;
         document.getElementById('semanaMessage').textContent = result.mensagem;
 
