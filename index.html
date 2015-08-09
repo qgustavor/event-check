@@ -200,7 +200,7 @@
     if (currentId) {
       data.push({
         id: currentId[1],
-        data: Date.now()
+        hora: Date.now()
       });
     }
     
@@ -239,7 +239,7 @@
       if (!el.id) {
         el = {
           id: el,
-          data: Date.now()
+          hora: Date.now()
         };
       }
       
@@ -264,7 +264,7 @@
         '&aluno=' + encodeURIComponent(el.id) +
         '&user=' + encodeURIComponent(user) +
         '&pass=' + encodeURIComponent(sign) +
-        '&hora=' + encodeURIComponent(el.data);
+        '&hora=' + encodeURIComponent(el.hora);
 
       container.classList.add('semana-card-wide_hidden');
 
