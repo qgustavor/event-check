@@ -120,7 +120,8 @@
 
     function generateKeyPair(user, pass) {
       var hash = new Uint8Array([]);
-      user = nacl.util.decodeUTF8(user);
+      // People expect that the user is normalized
+      user = nacl.util.decodeUTF8(user.toLowerCase());
       pass = nacl.util.decodeUTF8(pass);
 
       var userData = typedConcat(
@@ -167,7 +168,7 @@
     doLoginForm.addEventListener('submit', function (evt) {
       evt.preventDefault();
       accessAdminArea();
-      var user = document.getElementById('user').value.trim().toLowerCase();
+      var user = document.getElementById('user').value.trim();
       var passEl = document.getElementById('pass');
       var seed = generateKeyPair(user, passEl.value);
       passEl.value = '';
