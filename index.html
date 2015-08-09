@@ -90,7 +90,7 @@
   <!-- Typed Array fallback, based on the famous H5BP jQuery fallback -->
   <script>window.Uint8Array || document.write('<script src="https://cdn.rawgit.com/inexorabletash/polyfill/1787e143a8ee7b0747ac8c974d98dcec5669b89e/typedarray.js"><\/script>');</script>
   <script src="https://cdn.rawgit.com/dchest/tweetnacl-js/9e1ef31362dfe88aa9ca96468cdc3f28d72ba2da/nacl-fast.min.js"></script>
-  <script>
+  <script>		/* global nacl */ /* yes, it passes jshint (without strict mode) */
     var container = document.getElementsByClassName('semana-card-wide')[0];
     var adminLink = document.getElementsByClassName('semana-admin-link')[0];
     var doLoginForm = document.getElementsByClassName('semana-admin-area')[0];
@@ -118,10 +118,10 @@
       return result;
     }
 
-    function generateKeyPair(userEl, passEl) {
+    function generateKeyPair(user, pass) {
       var hash = new Uint8Array([]);
-      var user = nacl.util.decodeUTF8(userEl.value.trim().toLowerCase());
-      var pass = nacl.util.decodeUTF8(passEl.value);
+      user = nacl.util.decodeUTF8(user);
+      pass = nacl.util.decodeUTF8(pass);
 
       var userData = typedConcat(
         user,
@@ -155,23 +155,25 @@
     var user = '';
     if (localStorage.credentials) {
       doLoginBtn.textContent = 'Atualizar credenciais';
-      doLogin(nacl.util.decodeBase64(localStorage.credentials));
+      var parts = localStorage.credentials.split('!');
+      doLogin(parts[0], nacl.util.decodeBase64(parts[1]));
     }
 
-    function doLogin(password) {
+    function doLogin(userInput, password) {
+      user = userInput;
       credentials = nacl.sign.keyPair.fromSeed(password);
-      user = nacl.util.encodeBase64(credentials.publicKey);
     }
 
     doLoginForm.addEventListener('submit', function (evt) {
       evt.preventDefault();
       accessAdminArea();
-      var seed = generateKeyPair(
-        document.getElementById('user'),
-        document.getElementById('pass'));
+      var user = document.getElementById('user').value.trim().toLowerCase();
+      var passEl = document.getElementById('pass');
+      var seed = generateKeyPair(user, passEl.value);
+      passEl.value = '';
 
-      localStorage.credentials = nacl.util.encodeBase64(seed);
-      doLogin(seed);
+      localStorage.credentials = user + '!' + nacl.util.encodeBase64(seed);
+      doLogin(user, seed);
       afterLogged();
     });
 
@@ -189,7 +191,16 @@
       document.body.appendChild(iframe);
     }
 
-    var data = [(location.href.match(/aluno=(\d+)/) || [])[1]];
+    var data = [];
+    var currentId = location.href.match(/aluno=(\d+)/);
+    
+    if (currentId) {
+      data.push({
+        id: currentId[1],
+        data: Date.now()
+      });
+    }
+    
     if (localStorage.offlineData) {
       try {
         data = data.concat(JSON.parse(localStorage.offlineData));
@@ -209,7 +220,8 @@
       if (location.hash === '#signup') {
         showResult({
           titulo: 'Registro de responsável',
-          mensagem: 'Adicione o seguinte código a planilha de controle: ' + user
+          mensagem: 'Adicione o seguinte linha a planilha de responsaveis: ' + user +
+            ', ' + nacl.util.encodeBase64(credentials.publicKey)
         });
         container.classList.add('semana-card-wide_signup');
       } else {
@@ -219,26 +231,34 @@
 
     function loop() {
       var el = data.shift(); if (!el) {return;}
+      
+      // Backards compatibility
+      if (!el.id) {
+        el = {
+          id: el,
+          data: Date.now()
+        };
+      }
+      
       var callbackName = '_callback' + Date.now();
       
       showResult({titulo: 'Carregando', mensagem: 'Aguarde enquanto o servidor é contactado'});
       
       var script = document.createElement('script');
-      var hora = Date.now();
       var sign = nacl.util.encodeBase64(nacl.sign.detached(
         nacl.util.decodeUTF8(JSON.stringify({
-          aluno: el,
-          hora: hora // Let's avoid replay attacks
+          aluno: el.id,
+          hora: el.hora
         })),
         credentials.secretKey
       ));
 
       script.src = 'https://script.google.com/macros/s/AKfycbw-kz-BrkJN91Iw01TBh0FEppQlHAk4amAQzz3bwGkuIE6UlM8/exec' +
         '?callback=' + encodeURIComponent(callbackName) +
-        '&aluno=' + el +
+        '&aluno=' + el.id +
         '&user=' + user +
         '&pass=' + sign +
-        '&hora=' + hora;
+        '&hora=' + el.hora;
 
       container.classList.add('semana-card-wide_hidden');
 

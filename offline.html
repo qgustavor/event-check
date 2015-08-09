@@ -10,9 +10,12 @@
     p{margin:11px 0 22px;overflow:hidden}
   </style>
   <script>
-    if (top === parent) {
+    if (top === parent && (currentId = location.href.match(/aluno=(\d+)/))) {
       localStorage.offlineData=JSON.stringify(
-        JSON.parse(localStorage.offlineData || '[]').concat(location.href.match(/aluno=(\d+)/)[1])
+        JSON.parse(localStorage.offlineData || '[]').concat({
+          id: currentId[1],
+          hora: Date.now()
+        })
       );
     }
   </script>
