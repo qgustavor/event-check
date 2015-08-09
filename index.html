@@ -200,7 +200,7 @@
     if (currentId) {
       data.push({
         id: currentId[1],
-        hora: Date.now()
+        hora: new Date().toISOString()
       });
     }
     

@@ -14,7 +14,7 @@
       localStorage.offlineData=JSON.stringify(
         JSON.parse(localStorage.offlineData || '[]').concat({
           id: currentId[1],
-          hora: Date.now()
+          hora: new Date().toISOString()
         })
       );
     }
