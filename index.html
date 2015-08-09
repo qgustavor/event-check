@@ -79,7 +79,7 @@
     <div id="semanaMessage" class="mdl-card__supporting-text">A página está sendo carregada</div>
   </div>
   <!-- In case of no javascript redirect it to a unexistent host -->
-  <form class="semana-admin-area mdl-card mdl-shadow--2dp semana-admin-area_hidden" action="https://127.0.0.1/">
+  <form class="semana-admin-area mdl-card mdl-shadow--2dp semana-admin-area_hidden" action="https://[::1]/" method="POST">
     <label>Faça login para continuar</label>
     <input class="mdl-textfield__input" type="text" id="user" placeholder="Login">
     <input class="mdl-textfield__input" type="password" id="pass" placeholder="Senha">
@@ -129,8 +129,8 @@
         pass
       );
 
-      // Target devices are mobile ones
-      // By the way, no one will try to break this.
+      // Target devices are phones, so the small loop count.
+      // By the way, no one will ever try to break this.
       for (var i = 0; i < 500; i++) {
         hash = nacl.hash(typedConcat(
           userData,
@@ -183,7 +183,9 @@
       });
     } else {
       var iframe = document.createElement('iframe');
-      iframe.style.opacity = 0;
+      iframe.style.position = 'absolute';
+      iframe.style.top = '-100%';
+      iframe.style.height = '1px';
       iframe.src = 'offline.html';
       iframe.addEventListener('load', function () {
         document.body.removeChild(iframe);  
@@ -220,8 +222,8 @@
       if (location.hash === '#signup') {
         showResult({
           titulo: 'Registro de responsável',
-          mensagem: 'Adicione o seguinte linha a planilha de responsaveis: ' + user +
-            ', ' + nacl.util.encodeBase64(credentials.publicKey)
+          mensagem: 'Adicione o seguinte linha a planilha de responsaveis: "' + user +
+            '", "' + nacl.util.encodeBase64(credentials.publicKey) + '" (sem as aspas)'
         });
         container.classList.add('semana-card-wide_signup');
       } else {
@@ -245,6 +247,9 @@
       showResult({titulo: 'Carregando', mensagem: 'Aguarde enquanto o servidor é contactado'});
       
       var script = document.createElement('script');
+      // Dear cryptographers, I know it's insecure against active attacks
+      // But those are a lot hard, as we're using HTTPS
+      // And it's a lot better than other authentication methods
       var sign = nacl.util.encodeBase64(nacl.sign.detached(
         nacl.util.decodeUTF8(JSON.stringify({
           aluno: el.id,
@@ -255,10 +260,10 @@
 
       script.src = 'https://script.google.com/macros/s/AKfycbw-kz-BrkJN91Iw01TBh0FEppQlHAk4amAQzz3bwGkuIE6UlM8/exec' +
         '?callback=' + encodeURIComponent(callbackName) +
-        '&aluno=' + el.id +
-        '&user=' + user +
-        '&pass=' + sign +
-        '&hora=' + el.hora;
+        '&aluno=' + encodeURIComponent(el.id) +
+        '&user=' + encodeURIComponent(user) +
+        '&pass=' + encodeURIComponent(sign) +
+        '&hora=' + encodeURIComponent(el.hora);
 
       container.classList.add('semana-card-wide_hidden');
 
