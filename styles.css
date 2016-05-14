@@ -1,0 +1,62 @@
+body {
+  background-color: #EEF;
+}
+
+.semana-card-wide {
+  transition: opacity 1.2s ease-out;
+}
+
+.semana-card-wide_hidden {
+  opacity: 0.2;
+}
+
+.semana-admin-area_hidden,
+.semana-admin-link {
+  display: none;
+}
+
+.semana-admin-area_hidden + .semana-admin-link { display: block; }
+
+.semana-admin-area, .semana-card-wide {
+  position: absolute;
+  top: 7%;
+  max-width: 254px;
+  margin: 7% auto 1%;
+  left: 0;
+  right: 0;
+}
+
+.semana-card-wide > .mdl-card__title {
+  color: #FFF;
+  height: 176px;
+  /* https://dribbble.com/shots/1965707-Students-desk */
+  background: -webkit-linear-gradient(0deg, #448D74, rgba(193, 225, 214, 0)), url('https://i.imgur.com/kitAlik.png') center / cover;
+  background: linear-gradient(0deg, #448D74, rgba(193, 225, 214, 0)), url('https://i.imgur.com/kitAlik.png') center / cover;
+  background-color: #448D74;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.semana-card-wide > .mdl-card__menu {
+  color: #fff;
+}
+
+.semana-card-wide_signup > .mdl-card__supporting-text {
+  word-break: break-all;
+}
+
+.semana-admin-link {
+  opacity: 0.2;
+  transition: opacity 0.3s;
+  position: absolute;
+  bottom: 7%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.semana-admin-link:hover, .semana-admin-link:focus { opacity: 1; }
+
+.semana-admin-area {
+  text-align: center;
+  padding: 2em;
+}
+.semana-admin-area > * { margin: 0.5em auto; }
