@@ -17,9 +17,8 @@
           // Seems some browsers have problems with this:
           // 'https://storage.googleapis.com/code.getmdl.io/1.0.2/material.red-indigo.min.css',
           // 'https://fonts.googleapis.com/icon?family=Material+Icons',
-          '/styles.css',
-          '/path/to/someotherimage.png',
-          '/offline.html'
+          'styles.css',
+          'offline.html'
         ]);
       });
   };
@@ -52,7 +51,7 @@
       event.respondWith(
         fetch(request)
         .catch(function () {
-          return caches.match('/offline.html');
+          return caches.match('offline.html');
         })
       );
       return;
@@ -75,7 +74,7 @@
         .catch(function () {
           return caches.match(request)
             .then(function (response) {
-              return response || caches.match('/offline.html');
+              return response || caches.match('offline.html');
             })
         })
       );
