@@ -133,7 +133,7 @@ function afterLogged() {
   if (location.hash === '#signup') {
     showResult({
       titulo: 'Registro de responsável',
-      mensagem: 'Adicione o seguinte linha a planilha de responsaveis: "' + user +
+      mensagem: 'Adicione o seguinte linha a planilha de responsáveis: "' + user +
         '", "' + nacl.util.encodeBase64(credentials.publicKey) + '" (sem as aspas)'
     });
     container.classList.add('semana-card-wide_signup');
