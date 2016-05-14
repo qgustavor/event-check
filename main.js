@@ -80,6 +80,15 @@ doLoginForm.addEventListener('submit', function (evt) {
   var user = document.getElementById('user').value.trim();
   var passEl = document.getElementById('pass');
   var seed = generateKeyPair(user, passEl.value);
+  
+  // Cancel login:
+  if (!user.value || !user) {
+    if (user) {
+      afterLogged();
+    }
+    return;
+  }
+  
   passEl.value = '';
 
   localStorage.credentials = user + '!' + nacl.util.encodeBase64(seed);
