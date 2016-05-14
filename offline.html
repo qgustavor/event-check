@@ -8,24 +8,25 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="styles.css">
 
-<script>
-  // `top === parent` allows AppCache to work better
-  if (top === parent && (currentId = location.href.match(/aluno=(\d+)/))) {
-    localStorage.offlineData = JSON.stringify(
-      JSON.parse(localStorage.offlineData || '[]').concat({
-        id: currentId[1],
-        hora: new Date().toISOString()
-      })
-    );
-  }
-</script>
-
 <body>
   <div class="mdl-card mdl-shadow--2dp semana-card-wide">
     <div class="mdl-card__title">
       <h2 class="mdl-card__title-text">Você está offline.</h2>
     </div>
-    <div class="mdl-card__supporting-text">A confirmação foi registrada nesse dispositivo e
-    será efetivada quando a conexão for reestabelecida e essa página for aberta novamente.</div>
+    <div class="mdl-card__supporting-text" id="message"></div>
   </div>
 </body>
+
+<script>
+  if (top === parent && (currentId = location.href.match(/aluno=(\d+)/))) {
+    localStorage.offlineData=JSON.stringify(
+      JSON.parse(localStorage.offlineData || '[]').concat({
+        id: currentId[1],
+        hora: new Date().toISOString()
+      })
+    );
+    document.getElementById('message').textContent = 'A confirmação foi registrada ' +
+    'nesse dispositivo e será efetivada quando a conexão for restabelecida e essa ' +
+    'página for aberta novamente.';
+  }
+</script>
