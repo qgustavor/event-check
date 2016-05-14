@@ -14,10 +14,10 @@
     return caches.open(version + staticCacheName)
       .then(function (cache) {
         return cache.addAll([
-          // Seems some browsers have problems with this:
-          'https://storage.googleapis.com/code.getmdl.io/1.0.2/material.red-indigo.min.css',
+          // Resources without CORS can't be cached:
           'https://fonts.googleapis.com/icon?family=Material+Icons',
           'https://i.imgur.com/kitAlik.png',
+          'mdl.material.red-indigo.min.css',
           'styles.css',
           'offline.html'
         ]);
