@@ -38,8 +38,9 @@ function generateKeyPair(user, pass) {
     pass
   );
 
-  // Target devices are phones, so the small loop count.
+  // Target devices are smartphones, so the small loop count.
   // By the way, no one will ever try to break this.
+  // >> IF YOU FORK THIS CODE AGREE WITH THE ABOVE OR INCREASE LOOP COUNT <<
   for (var i = 0; i < 500; i++) {
     hash = nacl.hash(typedConcat(
       userData,
@@ -91,6 +92,7 @@ if (navigator.serviceWorker) {
     scope: '.'
   });
 } else {
+  // AppCache fallback
   var iframe = document.createElement('iframe');
   iframe.style.position = 'absolute';
   iframe.style.top = '-100%';
@@ -143,19 +145,13 @@ function afterLogged() {
 function loop() {
   var el = data.shift(); if (!el) {return;}
   
-  // Backards compatibility
-  if (!el.id) {
-    el = {
-      id: el,
-      hora: Date.now()
-    };
-  }
-  
-  var callbackName = '_callback' + Date.now();
+  var callbackName = 'callback_' + Date.now();
   
   showResult({titulo: 'Carregando', mensagem: 'Aguarde enquanto o servidor é contactado'});
   
+  // We are using JSONP (as Apps Script had problems with CORS)
   var script = document.createElement('script');
+  
   // Dear cryptographers, I know it's insecure against active attacks
   // But those are a lot hard, as we're using HTTPS
   // And it's a lot better than other authentication methods
