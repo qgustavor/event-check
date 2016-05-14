@@ -4,12 +4,12 @@
 <meta name=viewport content="initial-scale=1, minimum-scale=1, width=device-width">
 <title>Segunda Semana de Engenharia Civil</title>
 
-<link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.2/material.red-indigo.min.css">
+<link rel="stylesheet" href="mdl.material.red-indigo.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="styles.css">
 
 <script>
-  // `top === parent` allows AppCache to work
+  // `top === parent` allows AppCache to work better
   if (top === parent && (currentId = location.href.match(/aluno=(\d+)/))) {
     localStorage.offlineData = JSON.stringify(
       JSON.parse(localStorage.offlineData || '[]').concat({
