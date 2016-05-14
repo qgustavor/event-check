@@ -18,6 +18,7 @@
           'https://fonts.googleapis.com/icon?family=Material+Icons',
           'https://i.imgur.com/kitAlik.png',
           'mdl.material.red-indigo.min.css',
+          'logo-ca.svg',
           'styles.css',
           'offline.html'
         ]);
