@@ -137,8 +137,13 @@ function afterLogged() {
         '", "' + nacl.util.encodeBase64(credentials.publicKey) + '" (sem as aspas)'
     });
     container.classList.add('semana-card-wide_signup');
-  } else {
+  } else if (data.length) {
     loop();
+  } else {
+    showResult({
+      titulo: 'Registro de presença',
+      mensagem: 'Não foi possível registrar nenhuma presença. Verifique se visitou o endereço correto.'
+    });
   }
 }
 
