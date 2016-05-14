@@ -15,8 +15,9 @@
       .then(function (cache) {
         return cache.addAll([
           // Seems some browsers have problems with this:
-          // 'https://storage.googleapis.com/code.getmdl.io/1.0.2/material.red-indigo.min.css',
-          // 'https://fonts.googleapis.com/icon?family=Material+Icons',
+          'https://storage.googleapis.com/code.getmdl.io/1.0.2/material.red-indigo.min.css',
+          'https://fonts.googleapis.com/icon?family=Material+Icons',
+          'https://i.imgur.com/kitAlik.png',
           'styles.css',
           'offline.html'
         ]);
