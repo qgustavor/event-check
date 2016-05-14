@@ -19,9 +19,9 @@ body {
 
 .semana-admin-area, .semana-card-wide {
   position: absolute;
-  top: 7%;
+  top: 200px;
   max-width: 254px;
-  margin: 7% auto 1%;
+  margin: 1% auto;
   left: 0;
   right: 0;
 }
